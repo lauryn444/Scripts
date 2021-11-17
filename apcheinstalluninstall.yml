@@ -1,0 +1,19 @@
+#yml languague
+
+---
+- name: my first playbook
+  hosts: webservers
+  become: true
+  tasks:
+
+  - name: Install apache httpd
+    ## (state = present is optional)
+    apt: 
+      name: apache2
+      state: present
+ 
+    ## (state: absent will force an uninstall)
+  - name: uninstall apache httpd
+    apt:
+      name: apache2
+      state: absent	
