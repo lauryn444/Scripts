@@ -1,0 +1,37 @@
+# packages and mods configuration
+# cloud class
+
+---
+- name: Config Web VM with docker and apps
+  hosts: webservers
+  become: true
+  tasks:
+
+   - name: docker.io
+     apt:
+      update_cache: yes
+      name: docker.io
+      state: present
+
+   - name: Install pip3
+     apt:
+      name: python3-pip
+      state: present
+
+   - name: Install Docker (using python install)
+     pip:
+       name: docker
+       state: present
+
+   - name: Download and launch the docker container
+     docker_container:
+     name: dvwa
+       image: cyberxsecurity/dvwa
+       state: started
+       restart_policy: always
+       published_ports: 80:80
+
+   - name: Enable docker service
+     systemd:
+        name: docker
+        enabled: yes
